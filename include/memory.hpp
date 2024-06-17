@@ -29,10 +29,10 @@
 
 class Memory {
   public:
+  // Constants for memory size and program start/end addresses
   static constexpr size_t RAM_SIZE = 4096;
   static constexpr size_t PROGRAM_START = 0x200;
   static constexpr size_t PROGRAM_END = 0xFFF;
-  // Constants for memory size and program start/end addresses
 
   // Constructor to initialize memory
   Memory();
