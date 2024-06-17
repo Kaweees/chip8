@@ -38,6 +38,12 @@ class Chip8 {
   uint8_t read(uint16_t a);
   void write(uint16_t a, uint8_t d);
 
+  // Fetches the next opcode from memory
+  void fetch();
+
+  // Executes the current opcode
+  void execute();
+
 #ifdef LOGMODE
   private:
   FILE *logfile = nullptr;
