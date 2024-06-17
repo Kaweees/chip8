@@ -78,7 +78,68 @@ void Chip8::execute() {
           break;
       }
       break;
-      // case 0x9000:
-      // Skip next instruction if Vx !=
+    case 0x9000:
+      // Skip next instruction if Vx != Vy
+      break;
+    case 0xA000:
+      // Set I = NNN
+      break;
+    case 0xB000:
+      // Jump to location NNN + V0
+      break;
+    case 0xC000:
+      // Set Vx = random byte AND NN
+      break;
+    case 0xD000:
+      // Display n-byte sprite starting at memory location I at (Vx, Vy), set VF
+      // = collision
+      break;
+    case 0xE000:
+      switch (opcode & 0x00FF) {
+        case 0x009E:
+          // Skip next instruction if key with the value of Vx is pressed
+          break;
+        case 0x00A1:
+          // Skip next instruction if key with the value of Vx is not pressed
+          break;
+        default:
+          break;
+      }
+      break;
+    case 0xF000:
+      switch (opcode & 0x00FF) {
+        case 0x0007:
+          // Set Vx = delay timer value
+          break;
+        case 0x000A:
+          // Wait for a key press, store the value of the key in Vx
+          break;
+        case 0x0015:
+          // Set delay timer = Vx
+          break;
+        case 0x0018:
+          // Set sound timer = Vx
+          break;
+        case 0x001E:
+          // Set I = I + Vx
+          break;
+        case 0x0029:
+          // Set I = location of sprite for digit Vx
+          break;
+        case 0x0033:
+          // Store BCD representation of Vx in memory locations I, I+1, and I+2
+          break;
+        case 0x0055:
+          // Store registers V0 through Vx in memory starting at location I
+          break;
+        case 0x0065:
+          // Read registers V0 through Vx from memory starting at location I
+          break;
+        default:
+          break;
+      }
+      break;
+    default:
+      break;
   }
 }
