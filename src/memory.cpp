@@ -17,3 +17,14 @@ uint8_t Memory::read(uint16_t address) const {
     throw std::out_of_range("Memory read out of bounds");
   }
 }
+
+void Memory::write(uint16_t address, uint8_t value) {
+  static constexpr size_t RAM_START = 0x200;
+  static constexpr size_t RAM_END = 0xFFF;
+  // Guard to check if address is within memory bounds
+  if (RAM_START <= address && address <= RAM_END) {
+    memory[address] = value;
+  } else {
+    throw std::out_of_range("Memory write out of bounds");
+  }
+}

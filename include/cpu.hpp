@@ -35,8 +35,8 @@ class Chip8 {
 
   // Linkage to the memory bus
   Memory *memory = nullptr;
-  uint8_t read(uint16_t a);
-  void write(uint16_t a, uint8_t d);
+  uint8_t read(uint16_t address);
+  void write(uint16_t address, uint8_t value);
 
   // Fetches the next opcode from memory
   void fetch();

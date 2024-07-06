@@ -1,11 +1,6 @@
-cmake_minimum_required(VERSION 3.10)
-
-# Project name and version
-project(chip8 VERSION 1.0)
-
-# Specify the C++ standard
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
+cmake_minimum_required(VERSION 3.0)
+project(chip8 CXX)
+set(CMAKE_CXX_STANDARD 14) # Use C++14 standard for more features
 
 # Adding Raylib
 include(FetchContent)
@@ -23,8 +18,8 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(raylib)
 
 # Adding our source files
-file(GLOB_RECURSE PROJECT_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_LIST_DIR}/src/*.c") # Define PROJECT_SOURCES as a list of all source files
-set(PROJECT_INCLUDE "${CMAKE_CURRENT_LIST_DIR}/include/") # Define PROJECT_INCLUDE to be the path to the include directory of the project
+file(GLOB_RECURSE PROJECT_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_LIST_DIR}/src/*.c" "${CMAKE_CURRENT_LIST_DIR}/src/*.cpp" "${CMAKE_CURRENT_LIST_DIR}/src/*.cc" "${CMAKE_CURRENT_LIST_DIR}/src/*.cxx") # Define PROJECT_SOURCES as a list of all source files
+file(GLOB_RECURSE PROJECT_INCLUDE CONFIGURE_DEPENDS "${CMAKE_CURRENT_LIST_DIR}/include/*.h" "${CMAKE_CURRENT_LIST_DIR}/include/*.hpp" "${CMAKE_CURRENT_LIST_DIR}/include/*.hh" "${CMAKE_CURRENT_LIST_DIR}/include/*.hxx") # Define PROJECT_INCLUDE to be the path to the include directory of the project
 
 # Declaring our executable
 add_executable(${PROJECT_NAME})

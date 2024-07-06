@@ -12,6 +12,9 @@ uint8_t Chip8::read(uint16_t address) { return memory->read(address); }
 
 // Writes a byte to the memory at the specified address
 void Chip8::write(uint16_t address, uint8_t value) {
+  if (memory == nullptr) {
+    throw std::runtime_error("Memory bus not linked to CPU");
+  }
   memory->write(address, value);
 }
 
