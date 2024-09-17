@@ -1,18 +1,15 @@
 #pragma once
 #include <cstdint>
-#include <map>
+#include <random>
 #include <string>
-#include <vector>
+
+#include "../include/memory.hpp"
 
 #ifdef LOGMODE
 #include <cstdio>
 #endif
 
 namespace chip8 {
-// Forward declaration of generic communications bus class to
-// prevent circular inclusions
-class Memory;
-
 // The meat and potatoes - a class representing the emulated Chip-8 CPU
 class CPU {
   public:
@@ -22,7 +19,7 @@ class CPU {
   // Destructor to free memory
   ~CPU() = default;
 
-  public:
+  private:
   uint8_t v[16] = {0};   // General Purpose Registers (V0-VF)
   uint16_t i = 0;        // I - stores memory addresses
   uint8_t dt = 0;        // Delay Timer
@@ -30,24 +27,35 @@ class CPU {
   uint16_t pc = 0x0000;  // Program Counter - stores address of next instruction
                          // to execute
   uint8_t sp = 0x00;     // Stack Pointer - points to location on memory bus
+  uint8_t delayTimer;
+  uint8_t soundTimer;
+  std::random_device rd;
+  std::mt19937 gen;
+  std::uniform_int_distribution<> dis;
+#ifdef LOGMODE
+  FILE *logfile = nullptr;  // Log file for debugging
+#endif
 
   // Assisstive variables to facilitate emulation
   uint16_t opcode = 0x0000;  // The current opcode being executed
 
+  public:
   // Linkage to the memory bus
   Memory *memory = nullptr;
+
   uint8_t read(uint16_t address);
   void write(uint16_t address, uint8_t value);
+
+  // Method to load a ROM into memory
+  void loadRom(const std::string &file);
+
+  // Executes one cycle of the CPU
+  void cycle();
 
   // Fetches the next opcode from memory
   void fetch();
 
   // Executes the current opcode
   void execute();
-
-#ifdef LOGMODE
-  private:
-  FILE *logfile = nullptr;
-#endif
 };
 }  // namespace chip8

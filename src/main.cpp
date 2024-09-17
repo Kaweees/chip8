@@ -19,24 +19,20 @@ int main(int argc, char **argv) {
     file = argv[1];
   }
 
-  chip8::CPU chip8 = chip8::CPU();
-  chip8::Memory memory = chip8::Memory();
-  memory.display.setPixel(0, 0, true);
+  chip8::CPU chip8;
+  chip8.memory->display.setPixel(0, 0, true);
   // (63,0)
-  memory.display.setPixel(63, 0, true);
+  chip8.memory->display.setPixel(63, 0, true);
   // (0,31)
-  memory.display.setPixel(0, 31, true);
+  chip8.memory->display.setPixel(0, 31, true);
   // (63,31)
-  memory.display.setPixel(63, 31, true);
-  chip8.memory = &memory;
-  // chip8.loadRom(file);
+  chip8.memory->display.setPixel(63, 31, true);
+  chip8.loadRom(file);
 
   // Main emulation loop
   // Loop until window close button or ESC key is pressed
-  while (!memory.display.shouldClose()) {
-    // chip8.fetch();
-    // chip8.execute();
-    memory.display.update();
+  while (!chip8.memory->display.shouldClose()) {
+    chip8.cycle();
   }
   return EXIT_SUCCESS;
 }

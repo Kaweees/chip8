@@ -48,7 +48,7 @@ class Memory {
   void printMemory() const;
 
   // Array to represent memory
-  std::array<uint8_t, RAM_SIZE> memory;  // 4 kB of memory
+  std::array<uint8_t, RAM_SIZE> ram;  // 4 kB of memory
   // Array to represent stack
   std::array<uint16_t, STACK_SIZE> stack;  // 16 levels of stack
   // Array to represent keypad
