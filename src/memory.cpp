@@ -11,18 +11,18 @@ Memory::Memory() {
   display.clear();
 }
 
-uint8_t Memory::read(uint16_t address) const {
-  // Guard to check if address is within memory bounds
-  if (PROGRAM_START <= address && address <= PROGRAM_START) {
+uint8_t Memory::fetchByte(uint16_t address) const {
+  // Guard against invalid addresses
+  if (PROGRAM_START <= address && address <= PROGRAM_END) {
     return memory[address];
   } else {
     throw std::out_of_range("Memory read out of bounds");
   }
 }
 
-void Memory::write(uint16_t address, uint8_t value) {
-  // Guard to check if address is within memory bounds
-  if (PROGRAM_START <= address && address <= PROGRAM_START) {
+void Memory::storeByte(uint16_t address, uint8_t value) {
+  // Guard against invalid addresses
+  if (PROGRAM_START <= address && address <= PROGRAM_END) {
     memory[address] = value;
   } else {
     throw std::out_of_range("Memory write out of bounds");

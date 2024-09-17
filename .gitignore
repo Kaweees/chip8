@@ -63,4 +63,6 @@ CPackSourceConfig.cmake
 CMakeSettings.json
 
 # Build files
-chip8
+.cache/
+target/
+build/

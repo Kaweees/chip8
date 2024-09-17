@@ -1,4 +1,3 @@
-#include <raylib.h>
 #include <stddef.h>
 #include <stdio.h>
 
@@ -39,9 +38,5 @@ int main(int argc, char **argv) {
     // chip8.execute();
     memory.display.update();
   }
-
-  /* Close window and OpenGL context */
-  CloseWindow();
-
   return EXIT_SUCCESS;
 }

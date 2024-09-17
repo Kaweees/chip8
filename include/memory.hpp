@@ -39,10 +39,13 @@ class Memory {
   ~Memory() = default;
 
   // Method to read a byte from memory
-  uint8_t read(uint16_t address) const;
+  uint8_t fetchByte(uint16_t address) const;
 
   // Method to write a byte to memory
-  void write(uint16_t address, uint8_t value);
+  void storeByte(uint16_t address, uint8_t value);
+
+  // Method to print memory
+  void printMemory() const;
 
   // Array to represent memory
   std::array<uint8_t, RAM_SIZE> memory;  // 4 kB of memory

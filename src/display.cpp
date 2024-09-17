@@ -12,12 +12,13 @@ Display::Display() : pixelColor(WHITE), backgroundColor(BLACK) {
   InitWindow(DISPLAY_WIDTH * SCALE_FACTOR, DISPLAY_HEIGHT * SCALE_FACTOR,
       "CHIP-8 Emulator");
   SetTargetFPS(60);
-  // Image icon = LoadImage("resources/icon.png");
-  // SetWindowIcon(icon);
   clear();
 }
 
-Display::~Display() { CloseWindow(); }
+Display::~Display() {
+  // Close window and OpenGL context
+  CloseWindow();
+}
 
 void Display::clear() {
   for (auto& pixel : buffer) {

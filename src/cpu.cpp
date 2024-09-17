@@ -9,14 +9,14 @@ CPU::CPU() {
 }
 
 // Reads a byte from the memory at the specified address
-uint8_t CPU::read(uint16_t address) { return memory->read(address); }
+uint8_t CPU::read(uint16_t address) { return memory->fetchByte(address); }
 
 // Writes a byte to the memory at the specified address
 void CPU::write(uint16_t address, uint8_t value) {
   if (memory == nullptr) {
     throw std::runtime_error("Memory bus not linked to CPU");
   }
-  memory->write(address, value);
+  memory->storeByte(address, value);
 }
 
 // Fetches the next opcode from memory

@@ -8,6 +8,7 @@
 #include <cstdint>
 
 #include "../include/constants.hpp"
+#include "rlgl.h"
 
 // Display is a 64x32 monochrome display. Each byte represents 8 pixels in a
 // column.
