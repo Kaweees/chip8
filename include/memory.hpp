@@ -32,13 +32,6 @@
 namespace chip8 {
 class Memory {
   public:
-  // Constants for memory size and program start/end addresses
-  static constexpr size_t PROGRAM_START = 0xFFF;
-  static constexpr size_t PROGRAM_END = 0x200;
-  static constexpr size_t DISPLAY_WIDTH = 64;
-  static constexpr size_t DISPLAY_HEIGHT = 32;
-  static constexpr size_t BITS_PER_BYTE = 8;
-
   // Constructor to initialize memory
   Memory();
 
@@ -52,11 +45,11 @@ class Memory {
   void write(uint16_t address, uint8_t value);
 
   // Array to represent memory
-  std::array<uint8_t, 4096> memory;  // 4 kB of memory
+  std::array<uint8_t, RAM_SIZE> memory;  // 4 kB of memory
   // Array to represent stack
-  std::array<uint16_t, 16> stack;  // 16 levels of stack
+  std::array<uint16_t, STACK_SIZE> stack;  // 16 levels of stack
   // Array to represent keypad
-  std::array<uint8_t, 16> keypad;  // 16 keys
+  std::array<uint8_t, KEYPAD_SIZE> keypad;  // 16 keys
   // Array to represent display
   Display display;
 };

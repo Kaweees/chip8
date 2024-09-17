@@ -13,7 +13,7 @@ Memory::Memory() {
 
 uint8_t Memory::read(uint16_t address) const {
   // Guard to check if address is within memory bounds
-  if (Memory::PROGRAM_START <= address && address <= Memory::PROGRAM_START) {
+  if (PROGRAM_START <= address && address <= PROGRAM_START) {
     return memory[address];
   } else {
     throw std::out_of_range("Memory read out of bounds");
@@ -22,7 +22,7 @@ uint8_t Memory::read(uint16_t address) const {
 
 void Memory::write(uint16_t address, uint8_t value) {
   // Guard to check if address is within memory bounds
-  if (Memory::PROGRAM_START <= address && address <= Memory::PROGRAM_START) {
+  if (PROGRAM_START <= address && address <= PROGRAM_START) {
     memory[address] = value;
   } else {
     throw std::out_of_range("Memory write out of bounds");
