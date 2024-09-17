@@ -33,13 +33,15 @@ CPU::CPU() {
   std::copy(fontset.begin(), fontset.end(), this->memory->ram.begin());
 }
 
-void CPU::loadRom(const std::string& file) {
-  std::ifstream rom(file, std::ios::binary);
-  if (!rom) {
+void CPU::loadRom(const std::string& filename) {
+  std::ifstream file(filename, std::ios::binary);
+  if (file.is_open()) {
+    file.read(reinterpret_cast<char*>(&memory->ram[PROGRAM_START]),
+        RAM_SIZE - PROGRAM_START);
+    file.close();
+  } else {
     throw std::runtime_error("Failed to open ROM file");
   }
-  rom.read(reinterpret_cast<char*>(memory->ram.data() + PROGRAM_START),
-      memory->ram.size() - PROGRAM_START);
 }
 
 // Reads a byte from the memory at the specified address

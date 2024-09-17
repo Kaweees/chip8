@@ -47,7 +47,7 @@ class CPU {
   void write(uint16_t address, uint8_t value);
 
   // Method to load a ROM into memory
-  void loadRom(const std::string &file);
+  void loadRom(const std::string &filename);
 
   // Executes one cycle of the CPU
   void cycle();

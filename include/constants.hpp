@@ -15,4 +15,8 @@ constexpr size_t KEYPAD_SIZE = 16;
 // Constants for program addresses
 constexpr size_t PROGRAM_START = 0x200;
 constexpr size_t PROGRAM_END = 0xFFF;
+
+// Constants for fontset
+constexpr size_t FONTSET_START = 0x000;
+constexpr size_t FONTSET_END = 0x1FF;
 }  // namespace chip8

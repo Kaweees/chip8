@@ -14,9 +14,9 @@
 //------------------------------------------------------------------------------------
 int main(int argc, char **argv) {
   // Initialization of Chip8 and loading of program
-  std::string file = "./rom/space-invaders.ch8";
+  std::string filename = "./rom/space-invaders.ch8";
   if (argc > 1) {
-    file = argv[1];
+    filename = argv[1];
   }
 
   chip8::CPU chip8;
@@ -27,7 +27,7 @@ int main(int argc, char **argv) {
   chip8.memory->display.setPixel(0, 31, true);
   // (63,31)
   chip8.memory->display.setPixel(63, 31, true);
-  chip8.loadRom(file);
+  chip8.loadRom(filename);
 
   // Main emulation loop
   // Loop until window close button or ESC key is pressed
