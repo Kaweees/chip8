@@ -1,19 +1,15 @@
 #include <raylib.h>
 #include <stddef.h>
 #include <stdio.h>
-#include "raymath.h"
-#include "rlgl.h"
-
-#include <cstdint>
-#include <cstdio>
 #include <string.h>
+
+#include <string>
 
 #include "../include/cpu.hpp"
 #include "../include/memory.hpp"
 
 #define EXIT_SUCCESS 0
 #define EXIT_FAILURE 1
-#define PIXEL_SIZE 20
 
 //------------------------------------------------------------------------------------
 // Program main entry point
@@ -27,47 +23,22 @@ int main(int argc, char **argv) {
 
   chip8::CPU chip8 = chip8::CPU();
   chip8::Memory memory = chip8::Memory();
-  // (0,0)
-  memory.display[0] = true;
+  memory.display.setPixel(0, 0, true);
   // (63,0)
-  memory.display[63] = true;
+  memory.display.setPixel(63, 0, true);
   // (0,31)
-  memory.display[64 * 31] = true;
-  memory.display[64 * 32 - 1] = true;
+  memory.display.setPixel(0, 31, true);
+  // (63,31)
+  memory.display.setPixel(63, 31, true);
   chip8.memory = &memory;
   // chip8.loadRom(file);
 
-  // Initialization of Raylib
-  const int screenWidth = chip8::Memory::DISPLAY_WIDTH * PIXEL_SIZE;
-  const int screenHeight = chip8::Memory::DISPLAY_HEIGHT * PIXEL_SIZE;
-
-  InitWindow(screenWidth, screenHeight, "Chip8 emulator!");
-
   // Main emulation loop
-  // for (;;) {
-  //   chip8.fetch();
-  //   chip8.execute();
-
-  //   // TODO: Implement sound and graphics
-  // }
-
-  /* Loop until window close button or ESC key is pressed */
-  while (!WindowShouldClose()) {
-    /* Begin drawing */
-    BeginDrawing();
-
-    /* Draw background */
-    ClearBackground(BLACK);
-
-    /* Draw screen buffer on screen */
-    for (int y = 0; y < chip8::Memory::DISPLAY_HEIGHT; y++) {
-      for (int x = 0; x < chip8::Memory::DISPLAY_WIDTH; x++) {
-        DrawRectangle(x * PIXEL_SIZE, y * PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE, 
-        chip8.memory->display[y * chip8::Memory::DISPLAY_WIDTH + x] == 1 ? WHITE : BLACK);
-      }
-    }
-    /* End drawing */
-    EndDrawing();
+  // Loop until window close button or ESC key is pressed
+  while (!memory.display.shouldClose()) {
+    // chip8.fetch();
+    // chip8.execute();
+    memory.display.update();
   }
 
   /* Close window and OpenGL context */
