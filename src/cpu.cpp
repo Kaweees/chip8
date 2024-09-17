@@ -5,7 +5,7 @@
 namespace chip8 {
 CPU::CPU() {
   // Initialize the CPU
-  pc = Memory::PROGRAM_START;
+  pc = PROGRAM_START;
 }
 
 // Reads a byte from the memory at the specified address

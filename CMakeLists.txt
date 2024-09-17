@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 project(chip8 CXX)
 set(CMAKE_CXX_STANDARD 14) # Use C++14 standard for more features
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -Werror") # Set the compiler flags to include all warnings and treat them as errors
 
 # Adding Raylib
 include(FetchContent)
@@ -29,4 +30,9 @@ target_link_libraries(${PROJECT_NAME} PRIVATE raylib)
 
 # Setting ASSETS_PATH
 target_compile_definitions(${PROJECT_NAME} PUBLIC ASSETS_PATH="${CMAKE_CURRENT_SOURCE_DIR}/assets/") # Set the asset path macro to the absolute path on the dev machine
-#target_compile_definitions(${PROJECT_NAME} PUBLIC ASSETS_PATH="./assets") # Set the asset path macro in release mode to a relative path that assumes the assets folder is in the same directory as the game executable
+
+# Setting our output directory
+set_target_properties(${PROJECT_NAME} PROPERTIES 
+  RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_LIST_DIR}/target/release/"
+  OUTPUT_NAME ${PROJECT_NAME}
+)
