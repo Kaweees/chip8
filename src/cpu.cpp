@@ -195,28 +195,23 @@ void CPU::execute() {
       break;
       // pixels
       // mapper->display.setPixel(v[x], v[y], n)
-    case 0xD000:  // 0xDXYN: Draws a sprite at (VX, VY) with a height of N
-      // uint8_t pixelX = v[x] % DISPLAY_WIDTH;
-      // uint8_t pixelY = v[y] % DISPLAY_HEIGHT;
+    case 0xD000: {  // 0xDXYN: Draws a sprite at (VX, VY) with a height of N
       v[0xF] = 0;
-      //   for (int row = 0; row < n; ++row) {
-      //     uint8_t spriteByte = mapper->fetchByte(i + row);
-      //     for (int col = 0; col < 8; ++col) {
-      //       if ((spriteByte & (0x80 >> col)) != 0) {
-      //         if (mapper->display.getPixel(pixelX + col, pixelY + row)) {
-      //           v[0xF] = 1;
-      //         }
-      //         // display[index] ^= 1;
-      //         // int index = (pixelY + row) * DISPLAY_WIDTH + (pixelX + col);
-      //         // if (index < DISPLAY_WIDTH * DISPLAY_HEIGHT) {
-      //         //   if (display[index] == 1) V[0xF] = 1;
-      //         //   display[index] ^= 1;
-      //         // }
-      //       }
-      //     }
-      //   }
+      uint8_t pixelX = v[x] % DISPLAY_WIDTH;
+      uint8_t pixelY = v[y] % DISPLAY_HEIGHT;
+      for (int row = 0; row < n; ++row) {
+        uint8_t spriteByte = mapper->fetchByte(i + row);
+        for (int col = 0; col < 8; ++col) {
+          if ((spriteByte & (0x80 >> col)) != 0) {
+            if (mapper->display.getPixel(pixelX + col, pixelY + row)) {
+              v[0xF] = 1;
+            }
+          }
+        }
+      }
       pc += 2;
       break;
+    }
     case 0xE000:
       switch (nn) {
         case 0x9E:  // 0xEX9E: Skips the next instruction if the key stored in
