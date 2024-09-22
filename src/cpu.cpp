@@ -75,7 +75,8 @@ void CPU::cycle() {
 // Fetches the next opcode from memory
 void CPU::fetch() {
   opcode = read(pc) << 8 | read(pc + 1);
-  std::cout << "Opcode: " << opcode << std::endl;
+  std::cout << "Opcode: " << std::uppercase << std::setfill('0') << std::setw(4)
+            << std::hex << opcode << std::endl;
 }
 
 // Executes the current opcode
@@ -89,27 +90,28 @@ void CPU::execute() {
   switch (opcode & 0xF000) {
     case 0x0000:
       switch (opcode) {
-        case 0x00E0:  // 0x00E0: Clears the screen
+        case 0x00E0:  // 0x00E0: clear
           mapper->display.clear();
           pc += 2;
           break;
-        case 0x00EE:  // 0x00EE: Returns from a subroutine
+        case 0x00EE:  // 0x00EE: return
           pc = mapper->stack[--sp];
           pc += 2;
           break;
-        default:
-          std::cout << "Unknown opcode: " << opcode << std::endl;
+        default:  // 0x0NNN: call NNN
+          mapper->stack[sp++] = pc;
+          pc = nnn;
           break;
       }
       break;
-    case 0x1000:  // 0x1NNN: Jumps to address NNN
+    case 0x1000:  // 0x1NNN: jump NNN
       pc = nnn;
       break;
-    case 0x2000:  // 0x2NNN: Calls subroutine at NNN
+    case 0x2000:  // 0x2NNN: NNN
       mapper->stack[sp++] = pc;
       pc = nnn;
       break;
-    case 0x3000:  // 0x3XNN: Skips the next instruction if Vx == NN
+    case 0x3000:  // 0x3XNN: if vx != NN then
       pc += (v[x] == nn) ? 4 : 2;
       break;
     case 0x4000:  // 0x4XNN: Skips the next instruction if Vx != NN
@@ -193,8 +195,6 @@ void CPU::execute() {
       v[x] = rand() & nn;
       pc += 2;
       break;
-      // pixels
-      // mapper->display.setPixel(v[x], v[y], n)
     case 0xD000: {  // 0xDXYN: Draws a sprite at (VX, VY) with a height of N
       v[0xF] = 0;
       uint8_t pixelX = v[x] % DISPLAY_WIDTH;
@@ -202,11 +202,14 @@ void CPU::execute() {
       for (int row = 0; row < n; ++row) {
         uint8_t spriteByte = mapper->fetchByte(i + row);
         for (int col = 0; col < 8; ++col) {
-          if ((spriteByte & (0x80 >> col)) != 0) {
-            if (mapper->display.getPixel(pixelX + col, pixelY + row)) {
-              v[0xF] = 1;
-            }
+          uint8_t spritePixel = (spriteByte >> (7 - col)) & 0x1;
+          uint8_t displayPixel =
+              mapper->display.getPixel(pixelX + col, pixelY + row);
+          if (spritePixel && displayPixel) {
+            v[0xF] = 1;
           }
+          mapper->display.setPixel(
+              pixelX + col, pixelY + row, spritePixel ^ displayPixel);
         }
       }
       pc += 2;
@@ -271,13 +274,15 @@ void CPU::execute() {
           }
           pc += 2;
           break;
-        case 0x65:  // 0xF065: Fills V0 to VX (including VX) with values from
-                    // memory starting at address I
-          for (uint8_t i = 0; i <= x; ++i) {
+        case 0x65: {  // 0xFX65: Fills V0 to VX (including VX) with values from
+          // memory starting at address I
+          for (; i <= x; ++i) {
             v[i] = read(i);
           }
+          i += x + 1;
           pc += 2;
           break;
+        }
         default:
           std::cout << "Unknown opcode: " << opcode << std::endl;
           break;
