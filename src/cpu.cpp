@@ -197,48 +197,45 @@ void CPU::execute() {
       v[x] = rand() & nn;
       pc += 2;
       break;
-    //   // pixels
-    //   // mapper->display.setPixel(v[x], v[y], n)
+      // pixels
+      // mapper->display.setPixel(v[x], v[y], n)
     case 0xD000:  // 0xDXYN: Draws a sprite at (VX, VY) with a height of N
-      uint8_t pixelX = v[x] % DISPLAY_WIDTH;
-      uint8_t pixelY = v[y] % DISPLAY_HEIGHT;
+      // uint8_t pixelX = v[x] % DISPLAY_WIDTH;
+      // uint8_t pixelY = v[y] % DISPLAY_HEIGHT;
       v[0xF] = 0;
-      //   for (int row = 0; row < n; ++row) {
-      //     uint8_t spriteByte = mapper->fetchByte(i + row);
-      //     for (int col = 0; col < 8; ++col) {
-      //       if ((spriteByte & (0x80 >> col)) != 0) {
-      //         if (mapper->display.getPixel(pixelX + col, pixelY + row)) {
-      //           v[0xF] = 1;
-      //         }
-      //         // display[index] ^= 1;
-      //         // int index = (pixelY + row) * DISPLAY_WIDTH + (pixelX + col);
-      //         // if (index < DISPLAY_WIDTH * DISPLAY_HEIGHT) {
-      //         //   if (display[index] == 1) V[0xF] = 1;
-      //         //   display[index] ^= 1;
-      //         // }
-      //       }
-      //     }
-      //   }
-
-      //   pc += 2;
-      //   break;
-      // case 0xE000:
-      //   switch (nn) {
-      //     case 0x9E:  // 0xEX9E: Skips the next instruction if the key stored
-      //     in
-      //                 // Vx is pressed
-      //       pc += (mapper->keypad.getKey(v[x])) ? 4 : 2;
-      //       break;
-      //     case 0xA1:  // 0xEXA1: Skips the next instruction if the key stored
-      //     in
-      //                 // Vx is not pressed
-      //       pc += (mapper->keypad.getKey(v[x])) ? 2 : 4;
-      //       break;
-      //     default:
-      //       std::cout << "Unknown opcode: " << opcode << std::endl;
-      //       break;
-      //   }
-      //   break;
+    //   for (int row = 0; row < n; ++row) {
+    //     uint8_t spriteByte = mapper->fetchByte(i + row);
+    //     for (int col = 0; col < 8; ++col) {
+    //       if ((spriteByte & (0x80 >> col)) != 0) {
+    //         if (mapper->display.getPixel(pixelX + col, pixelY + row)) {
+    //           v[0xF] = 1;
+    //         }
+    //         // display[index] ^= 1;
+    //         // int index = (pixelY + row) * DISPLAY_WIDTH + (pixelX + col);
+    //         // if (index < DISPLAY_WIDTH * DISPLAY_HEIGHT) {
+    //         //   if (display[index] == 1) V[0xF] = 1;
+    //         //   display[index] ^= 1;
+    //         // }
+    //       }
+    //     }
+    //   }
+    //   pc += 2;
+    //   break;
+    case 0xE000:
+      switch (nn) {
+        case 0x9E:  // 0xEX9E: Skips the next instruction if the key stored in
+                    // Vx is pressed
+          pc += (mapper->keypad.getKey(v[x])) ? 4 : 2;
+          break;
+        case 0xA1:  // 0xEXA1: Skips the next instruction if the key stored in
+                    // Vx is not pressed
+          pc += (mapper->keypad.getKey(v[x])) ? 2 : 4;
+          break;
+        default:
+          std::cout << "Unknown opcode: " << opcode << std::endl;
+          break;
+      }
+      break;
       // case 0xF000:
       //   switch (nn) {
       //     case 0x07:  // 0xF007: Sets Vx to the value of the delay timer
