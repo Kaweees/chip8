@@ -102,30 +102,30 @@ void CPU::execute() {
           break;
       }
       break;
-      // case 0x1000:  // 0x1NNN: Jumps to address NNN
-      //   pc = nnn;
-      //   break;
-      // case 0x2000:  // 0x2NNN: Calls subroutine at NNN
-      //   mapper->stack[sp++] = pc;
-      //   pc = nnn;
-      //   break;
-      // case 0x3000:  // 0x3XNN: Skips the next instruction if Vx == NN
-      //   pc += (v[x] == nn) ? 4 : 2;
-      //   break;
-      // case 0x4000:  // 0x4XNN: Skips the next instruction if Vx != NN
-      //   pc += (v[x] != nn) ? 4 : 2;
-      //   break;
-      // case 0x5000:  // 0x5XY0: Skips the next instruction if Vx == Vy
-      //   pc += (v[x] == v[y]) ? 4 : 2;
-      //   break;
-      // case 0x6000:  // 0x6XNN: Sets Vx to NN
-      //   v[x] = nn;
-      //   pc += 2;
-      //   break;
-      // case 0x7000:  // 0x7XNN: Adds NN to Vx
-      //   v[x] += nn;
-      //   pc += 2;
-      //   break;
+    case 0x1000:  // 0x1NNN: Jumps to address NNN
+      pc = nnn;
+      break;
+    case 0x2000:  // 0x2NNN: Calls subroutine at NNN
+      mapper->stack[sp++] = pc;
+      pc = nnn;
+      break;
+    case 0x3000:  // 0x3XNN: Skips the next instruction if Vx == NN
+      pc += (v[x] == nn) ? 4 : 2;
+      break;
+    case 0x4000:  // 0x4XNN: Skips the next instruction if Vx != NN
+      pc += (v[x] != nn) ? 4 : 2;
+      break;
+    case 0x5000:  // 0x5XY0: Skips the next instruction if Vx == Vy
+      pc += (v[x] == v[y]) ? 4 : 2;
+      break;
+    case 0x6000:  // 0x6XNN: Sets Vx to NN
+      v[x] = nn;
+      pc += 2;
+      break;
+    case 0x7000:  // 0x7XNN: Adds NN to Vx
+      v[x] += nn;
+      pc += 2;
+      break;
       // case 0x8000:
       //   switch (n) {
       //     case 0x0:  // 0x8XY0: Sets Vx to Vy
