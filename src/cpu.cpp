@@ -126,63 +126,59 @@ void CPU::execute() {
       v[x] += nn;
       pc += 2;
       break;
-    // case 0x8000:
-    //   switch (n) {
-    //     case 0x0:  // 0x8XY0: Sets Vx to Vy
-    //       v[x] = v[y];
-    //       pc += 2;
-    //       break;
-    //     case 0x1:  // 0x8XY1: Sets Vx to Vx OR Vy
-    //       v[x] = v[x] | v[y];
-    //       pc += 2;
-    //       break;
-    //     case 0x2:  // 0x8XY2: Sets Vx to Vx AND Vy
-    //       v[x] = v[x] & v[y];
-    //       pc += 2;
-    //       break;
-    //     case 0x3:  // 0x8XY3: Sets Vx to Vx XOR Vy
-    //       v[x] = v[x] ^ v[y];
-    //       pc += 2;
-    //       break;
-    //     case 0x4:  // 0x8XY4: Adds Vy to Vx. VF is set to 1 if there's a
-    //     carry,
-    //       // otherwise 0
-    //       v[0xF] = (v[x] + v[y] > 0xFF) ? 1 : 0;
-    //       v[x] += v[y];
-    //       pc += 2;
-    //       break;
-    //     case 0x5:  // 0x8XY5: Vx = Vx - Vy, VF is set to 0 if there's a
-    //     borrow,
-    //       // otherwise 1
-    //       v[0xF] = (v[x] > v[y]) ? 1 : 0;
-    //       v[x] -= v[y];
-    //       pc += 2;
-    //       break;
-    //     case 0x6:  // 0x8XY6: Shifts Vx right by one. VF is set to the
-    //     least
-    //       // significant bit of Vx before the shift
-    //       v[0xF] = v[x] & 0x1;
-    //       v[x] >>= 1;
-    //       pc += 2;
-    //       break;
-    //     case 0x7:  // 0x8XY7: Sets Vx to Vy - Vx. VF is set to 0 if there's
-    //     a
-    //       // borrow, otherwise 1
-    //       v[0xF] = (v[y] > v[x]) ? 1 : 0;
-    //       v[x] = v[y] - v[x];
-    //       pc += 2;
-    //       break;
-    //     case 0xE:  // 0x8XYE: Shifts Vx left by one. VF is set to the most
-    //       // significant bit of Vx before the shift
-    //       v[0xF] = v[x] >> 7;
-    //       v[x] <<= 1;
-    //       pc += 2;
-    //       break;
-    //     default:
-    //       std::cout << "Unknown opcode: " << opcode << std::endl;
-    //       break;
-    //   }
-    //   break;
+    case 0x8000:
+      switch (n) {
+        case 0x0:  // 0x8XY0: Sets Vx to Vy
+          v[x] = v[y];
+          pc += 2;
+          break;
+        case 0x1:  // 0x8XY1: Sets Vx to Vx OR Vy
+          v[x] = v[x] | v[y];
+          pc += 2;
+          break;
+        case 0x2:  // 0x8XY2: Sets Vx to Vx AND Vy
+          v[x] = v[x] & v[y];
+          pc += 2;
+          break;
+        case 0x3:  // 0x8XY3: Sets Vx to Vx XOR Vy
+          v[x] = v[x] ^ v[y];
+          pc += 2;
+          break;
+        case 0x4:  // 0x8XY4: Adds Vy to Vx. VF is set to 1 if there's a carry,
+                   // otherwise 0
+          v[0xF] = (v[x] + v[y] > 0xFF) ? 1 : 0;
+          v[x] += v[y];
+          pc += 2;
+          break;
+        case 0x5:  // 0x8XY5: Vx = Vx - Vy, VF is set to 0 if there's a borrow,
+                   // otherwise 1
+          v[0xF] = (v[x] > v[y]) ? 1 : 0;
+          v[x] -= v[y];
+          pc += 2;
+          break;
+        case 0x6:  // 0x8XY6: Shifts Vx right by one. VF is set to the least
+                   // significant bit of Vx before the shift
+          v[0xF] = v[x] & 0x1;
+          v[x] >>= 1;
+          pc += 2;
+          break;
+        case 0x7:  // 0x8XY7: Sets Vx to Vy - Vx. VF is set to 0 if there's a
+                   // borrow, otherwise 1
+          v[0xF] = (v[y] > v[x]) ? 1 : 0;
+          v[x] = v[y] - v[x];
+          pc += 2;
+          break;
+        case 0xE:  // 0x8XYE: Shifts Vx left by one. VF is set to the most
+          // significant bit of Vx before the shift
+          v[0xF] = v[x] >> 7;
+          v[x] <<= 1;
+          pc += 2;
+          break;
+        default:
+          std::cout << "Unknown opcode: " << opcode << std::endl;
+          break;
+      }
+      break;
     case 0x9000:  // 0x9XY0: Skips the next instruction if Vx != Vy
       pc += (v[x] != v[y]) ? 4 : 2;
       break;
