@@ -3,7 +3,7 @@
 #include <random>
 #include <string>
 
-#include "../include/memory.hpp"
+#include "../include/mapper.hpp"
 
 #ifdef LOGMODE
 #include <cstdio>
@@ -41,7 +41,7 @@ class CPU {
 
   public:
   // Linkage to the memory bus
-  Memory *memory = nullptr;
+  Mapper *mapper = nullptr;
 
   uint8_t read(uint16_t address);
   void write(uint16_t address, uint8_t value);

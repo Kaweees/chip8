@@ -4,7 +4,7 @@
 #include <cstdint>
 
 #include "../include/display.hpp"
-
+#include "../include/keypad.hpp"
 // Memory Map:
 // +---------------+= 0xFFF (4095) End of Chip-8 RAM
 // |               |
@@ -29,14 +29,17 @@
 // |  interpreter  |
 // +---------------+= 0x000 (0) Start of Chip-8 RAM
 
+// The mapper is responsible for mapping the various memory buses to the
+// emulated Chip-8 system.
+
 namespace chip8 {
-class Memory {
+class Mapper {
   public:
   // Constructor to initialize memory
-  Memory();
+  Mapper();
 
   // Destructor to free memory
-  ~Memory() = default;
+  ~Mapper() = default;
 
   // Method to read a byte from memory
   uint8_t fetchByte(uint16_t address) const;
@@ -52,7 +55,7 @@ class Memory {
   // Array to represent stack
   std::array<uint16_t, STACK_SIZE> stack;  // 16 levels of stack
   // Array to represent keypad
-  std::array<uint8_t, KEYPAD_SIZE> keypad;  // 16 keys
+  Keypad keypad;
   // Array to represent display
   Display display;
 };

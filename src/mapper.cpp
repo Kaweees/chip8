@@ -1,17 +1,17 @@
-#include "../include/memory.hpp"
+#include "../include/mapper.hpp"
 
 #include <stdexcept>
 
 namespace chip8 {
-Memory::Memory() {
+Mapper::Mapper() {
   // Initialize memory with 0
   ram.fill(0);
   stack.fill(0);
-  keypad.fill(0);
+  keypad.clear();
   display.clear();
 }
 
-uint8_t Memory::fetchByte(uint16_t address) const {
+uint8_t Mapper::fetchByte(uint16_t address) const {
   // Guard against invalid addresses
   if (PROGRAM_START <= address && address <= PROGRAM_END) {
     return ram[address];
@@ -20,7 +20,7 @@ uint8_t Memory::fetchByte(uint16_t address) const {
   }
 }
 
-void Memory::storeByte(uint16_t address, uint8_t value) {
+void Mapper::storeByte(uint16_t address, uint8_t value) {
   // Guard against invalid addresses
   if (PROGRAM_START <= address && address <= PROGRAM_END) {
     ram[address] = value;
