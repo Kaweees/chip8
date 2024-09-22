@@ -236,70 +236,62 @@ void CPU::execute() {
           break;
       }
       break;
-      // case 0xF000:
-      //   switch (nn) {
-      //     case 0x07:  // 0xF007: Sets Vx to the value of the delay timer
-      //       v[x] = delayTimer;
-      //       pc += 2;
-      //       break;
-      //     case 0x0A:  // 0xF00A: A key press is awaited, and then stored in
-      //     Vx
-      //       // If the same key is pressed again, the program continues as
-      //       normal
-      //       // without waiting for the next key press
-      //       pc += 2;
-      //       break;
-      //     case 0x15:  // 0xF015: Sets the delay timer to Vx
-      //       delayTimer = v[x];
-      //       pc += 2;
-      //       break;
-      //     case 0x18:  // 0xF018: Sets the sound timer to Vx
-      //       soundTimer = v[x];
-      //       pc += 2;
-      //       break;
-      //     case 0x1E:  // 0xF01E: Adds Vx to I
-      //       i += v[x];
-      //       pc += 2;
-      //       break;
-      //     case 0x29:  // 0xF029: Sets I to the location of the sprite for the
-      //       // character in Vx
-      //       i = v[x] * 5;
-      //       pc += 2;
-      //       break;
-      //     case 0x33:  // 0xF033: Stores the binary-coded decimal
-      //     representation
-      //                 // of
-      //       // Vx, with the most significant of three digits at the address
-      //       in
-      //       // I, the middle digit at I plus 1, and the least significant
-      //       digit
-      //       // at I plus 2
-      //       write(i, v[x] / 100);
-      //       write(i + 1, (v[x] / 10) % 10);
-      //       write(i + 2, v[x] % 10);
-      //       pc += 2;
-      //       break;
-      //     case 0x55:  // 0xF055: Stores V0 to VX (including VX) in memory
-      //                 // starting at
-      //       // address I
-      //       for (uint8_t i = 0; i <= x; ++i) {
-      //         write(i, v[i]);
-      //       }
-      //       pc += 2;
-      //       break;
-      //     case 0x65:  // 0xF065: Fills V0 to VX (including VX) with values
-      //     from
-      //                 // memory
-      //       // starting at address I
-      //       for (uint8_t i = 0; i <= x; ++i) {
-      //         v[i] = read(i);
-      //       }
-      //       pc += 2;
-      //       break;
-      //     default:
-      //       std::cout << "Unknown opcode: " << opcode << std::endl;
-      //       break;
-      //       break;
+    case 0xF000:
+      switch (nn) {
+        case 0x07:  // 0xF007: Sets Vx to the value of the delay timer
+          v[x] = delayTimer;
+          pc += 2;
+          break;
+        case 0x0A:  // 0xF00A: A key press is awaited, and then stored in Vx If
+                    // the same key is pressed again, the program continues as
+                    // normal without waiting for the next key press
+          pc += 2;
+          break;
+        case 0x15:  // 0xF015: Sets the delay timer to Vx
+          delayTimer = v[x];
+          pc += 2;
+          break;
+        case 0x18:  // 0xF018: Sets the sound timer to Vx
+          soundTimer = v[x];
+          pc += 2;
+          break;
+        case 0x1E:  // 0xF01E: Adds Vx to I
+          i += v[x];
+          pc += 2;
+          break;
+        case 0x29:  // 0xF029: Sets I to the location of the sprite for the
+                    // character in Vx
+          i = v[x] * 5;
+          pc += 2;
+          break;
+        case 0x33:  // 0xF033: Stores the binary-coded decimal representation of
+                    // Vx, with the most significant of three digits at the
+                    // address in I, the middle digit at I plus 1, and the least
+                    // significant digit at I plus 2
+          write(i, v[x] / 100);
+          write(i + 1, (v[x] / 10) % 10);
+          write(i + 2, v[x] % 10);
+          pc += 2;
+          break;
+        case 0x55:  // 0xF055: Stores V0 to VX (including VX) in memory starting
+                    // at address I
+          for (uint8_t i = 0; i <= x; ++i) {
+            write(i, v[i]);
+          }
+          pc += 2;
+          break;
+        case 0x65:  // 0xF065: Fills V0 to VX (including VX) with values from
+                    // memory starting at address I
+          for (uint8_t i = 0; i <= x; ++i) {
+            v[i] = read(i);
+          }
+          pc += 2;
+          break;
+        default:
+          std::cout << "Unknown opcode: " << opcode << std::endl;
+          break;
+      }
+      break;
     default:
       std::cout << "Unknown opcode: " << opcode << std::endl;
       break;
