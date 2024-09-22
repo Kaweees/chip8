@@ -102,199 +102,211 @@ void CPU::execute() {
           break;
       }
       break;
-    case 0x1000:  // 0x1NNN: Jumps to address NNN
-      pc = nnn;
-      break;
-    case 0x2000:  // 0x2NNN: Calls subroutine at NNN
-      mapper->stack[sp++] = pc;
-      pc = nnn;
-      break;
-    case 0x3000:  // 0x3XNN: Skips the next instruction if Vx == NN
-      pc += (v[x] == nn) ? 4 : 2;
-      break;
-    case 0x4000:  // 0x4XNN: Skips the next instruction if Vx != NN
-      pc += (v[x] != nn) ? 4 : 2;
-      break;
-    case 0x5000:  // 0x5XY0: Skips the next instruction if Vx == Vy
-      pc += (v[x] == v[y]) ? 4 : 2;
-      break;
-    case 0x6000:  // 0x6XNN: Sets Vx to NN
-      v[x] = nn;
-      pc += 2;
-      break;
-    case 0x7000:  // 0x7XNN: Adds NN to Vx
-      v[x] += nn;
-      pc += 2;
-      break;
-    case 0x8000:
-      switch (n) {
-        case 0x0:  // 0x8XY0: Sets Vx to Vy
-          v[x] = v[y];
-          pc += 2;
-          break;
-        case 0x1:  // 0x8XY1: Sets Vx to Vx OR Vy
-          v[x] = v[x] | v[y];
-          pc += 2;
-          break;
-        case 0x2:  // 0x8XY2: Sets Vx to Vx AND Vy
-          v[x] = v[x] & v[y];
-          pc += 2;
-          break;
-        case 0x3:  // 0x8XY3: Sets Vx to Vx XOR Vy
-          v[x] = v[x] ^ v[y];
-          pc += 2;
-          break;
-        case 0x4:  // 0x8XY4: Adds Vy to Vx. VF is set to 1 if there's a carry,
-          // otherwise 0
-          v[0xF] = (v[x] + v[y] > 0xFF) ? 1 : 0;
-          v[x] += v[y];
-          pc += 2;
-          break;
-        case 0x5:  // 0x8XY5: Vx = Vx - Vy, VF is set to 0 if there's a borrow,
-          // otherwise 1
-          v[0xF] = (v[x] > v[y]) ? 1 : 0;
-          v[x] -= v[y];
-          pc += 2;
-          break;
-        case 0x6:  // 0x8XY6: Shifts Vx right by one. VF is set to the least
-          // significant bit of Vx before the shift
-          v[0xF] = v[x] & 0x1;
-          v[x] >>= 1;
-          pc += 2;
-          break;
-        case 0x7:  // 0x8XY7: Sets Vx to Vy - Vx. VF is set to 0 if there's a
-          // borrow, otherwise 1
-          v[0xF] = (v[y] > v[x]) ? 1 : 0;
-          v[x] = v[y] - v[x];
-          pc += 2;
-          break;
-        case 0xE:  // 0x8XYE: Shifts Vx left by one. VF is set to the most
-          // significant bit of Vx before the shift
-          v[0xF] = v[x] >> 7;
-          v[x] <<= 1;
-          pc += 2;
-          break;
-        default:
-          std::cout << "Unknown opcode: " << opcode << std::endl;
-          break;
-      }
-      break;
-    case 0x9000:  // 0x9XY0: Skips the next instruction if Vx != Vy
-      pc += (v[x] != v[y]) ? 4 : 2;
-      break;
-    case 0xA000:  // 0xA000: Sets I to the address NNN
-      i = nnn;
-      pc += 2;
-      break;
-    case 0xB000:  // 0xBNNN: Jumps to the address NNN + V0
-      pc = nnn + v[0];
-      break;
-    case 0xC000:  // 0xCXNN: Sets Vx to a random number AND NN
-      v[x] = rand() & nn;
-      pc += 2;
-      break;
-      // pixels
-      // mapper->display.setPixel(v[x], v[y], n)
-    case 0xD000:  // 0xDXYN: Draws a sprite at (VX, VY) with a height of N
-      uint8_t pixelX = v[x] % DISPLAY_WIDTH;
-      uint8_t pixelY = v[y] % DISPLAY_HEIGHT;
-      v[0xF] = 0;
+      // case 0x1000:  // 0x1NNN: Jumps to address NNN
+      //   pc = nnn;
+      //   break;
+      // case 0x2000:  // 0x2NNN: Calls subroutine at NNN
+      //   mapper->stack[sp++] = pc;
+      //   pc = nnn;
+      //   break;
+      // case 0x3000:  // 0x3XNN: Skips the next instruction if Vx == NN
+      //   pc += (v[x] == nn) ? 4 : 2;
+      //   break;
+      // case 0x4000:  // 0x4XNN: Skips the next instruction if Vx != NN
+      //   pc += (v[x] != nn) ? 4 : 2;
+      //   break;
+      // case 0x5000:  // 0x5XY0: Skips the next instruction if Vx == Vy
+      //   pc += (v[x] == v[y]) ? 4 : 2;
+      //   break;
+      // case 0x6000:  // 0x6XNN: Sets Vx to NN
+      //   v[x] = nn;
+      //   pc += 2;
+      //   break;
+      // case 0x7000:  // 0x7XNN: Adds NN to Vx
+      //   v[x] += nn;
+      //   pc += 2;
+      //   break;
+      // case 0x8000:
+      //   switch (n) {
+      //     case 0x0:  // 0x8XY0: Sets Vx to Vy
+      //       v[x] = v[y];
+      //       pc += 2;
+      //       break;
+      //     case 0x1:  // 0x8XY1: Sets Vx to Vx OR Vy
+      //       v[x] = v[x] | v[y];
+      //       pc += 2;
+      //       break;
+      //     case 0x2:  // 0x8XY2: Sets Vx to Vx AND Vy
+      //       v[x] = v[x] & v[y];
+      //       pc += 2;
+      //       break;
+      //     case 0x3:  // 0x8XY3: Sets Vx to Vx XOR Vy
+      //       v[x] = v[x] ^ v[y];
+      //       pc += 2;
+      //       break;
+      //     case 0x4:  // 0x8XY4: Adds Vy to Vx. VF is set to 1 if there's a
+      //     carry,
+      //       // otherwise 0
+      //       v[0xF] = (v[x] + v[y] > 0xFF) ? 1 : 0;
+      //       v[x] += v[y];
+      //       pc += 2;
+      //       break;
+      //     case 0x5:  // 0x8XY5: Vx = Vx - Vy, VF is set to 0 if there's a
+      //     borrow,
+      //       // otherwise 1
+      //       v[0xF] = (v[x] > v[y]) ? 1 : 0;
+      //       v[x] -= v[y];
+      //       pc += 2;
+      //       break;
+      //     case 0x6:  // 0x8XY6: Shifts Vx right by one. VF is set to the
+      //     least
+      //       // significant bit of Vx before the shift
+      //       v[0xF] = v[x] & 0x1;
+      //       v[x] >>= 1;
+      //       pc += 2;
+      //       break;
+      //     case 0x7:  // 0x8XY7: Sets Vx to Vy - Vx. VF is set to 0 if there's
+      //     a
+      //       // borrow, otherwise 1
+      //       v[0xF] = (v[y] > v[x]) ? 1 : 0;
+      //       v[x] = v[y] - v[x];
+      //       pc += 2;
+      //       break;
+      //     case 0xE:  // 0x8XYE: Shifts Vx left by one. VF is set to the most
+      //       // significant bit of Vx before the shift
+      //       v[0xF] = v[x] >> 7;
+      //       v[x] <<= 1;
+      //       pc += 2;
+      //       break;
+      //     default:
+      //       std::cout << "Unknown opcode: " << opcode << std::endl;
+      //       break;
+      //   }
+      //   break;
+      // case 0x9000:  // 0x9XY0: Skips the next instruction if Vx != Vy
+      //   pc += (v[x] != v[y]) ? 4 : 2;
+      //   break;
+      // case 0xA000:  // 0xA000: Sets I to the address NNN
+      //   i = nnn;
+      //   pc += 2;
+      //   break;
+      // case 0xB000:  // 0xBNNN: Jumps to the address NNN + V0
+      //   pc = nnn + v[0];
+      //   break;
+      // case 0xC000:  // 0xCXNN: Sets Vx to a random number AND NN
+      //   v[x] = rand() & nn;
+      //   pc += 2;
+      //   break;
+      //   // pixels
+      //   // mapper->display.setPixel(v[x], v[y], n)
+      // case 0xD000:  // 0xDXYN: Draws a sprite at (VX, VY) with a height of N
+      //   uint8_t pixelX = v[x] % DISPLAY_WIDTH;
+      //   uint8_t pixelY = v[y] % DISPLAY_HEIGHT;
+      //   v[0xF] = 0;
 
-      for (int row = 0; row < n; ++row) {
-        uint8_t spriteByte = mapper->fetchByte(i + row);
-        for (int col = 0; col < 8; ++col) {
-          if ((spriteByte & (0x80 >> col)) != 0) {
-            if (mapper->display.getPixel(pixelX + col, pixelY + row)) {
-              v[0xF] = 1;
-            }
-            // display[index] ^= 1;
-            // int index = (pixelY + row) * DISPLAY_WIDTH + (pixelX + col);
-            // if (index < DISPLAY_WIDTH * DISPLAY_HEIGHT) {
-            //   if (display[index] == 1) V[0xF] = 1;
-            //   display[index] ^= 1;
-            // }
-          }
-        }
-      }
+      //   for (int row = 0; row < n; ++row) {
+      //     uint8_t spriteByte = mapper->fetchByte(i + row);
+      //     for (int col = 0; col < 8; ++col) {
+      //       if ((spriteByte & (0x80 >> col)) != 0) {
+      //         if (mapper->display.getPixel(pixelX + col, pixelY + row)) {
+      //           v[0xF] = 1;
+      //         }
+      //         // display[index] ^= 1;
+      //         // int index = (pixelY + row) * DISPLAY_WIDTH + (pixelX + col);
+      //         // if (index < DISPLAY_WIDTH * DISPLAY_HEIGHT) {
+      //         //   if (display[index] == 1) V[0xF] = 1;
+      //         //   display[index] ^= 1;
+      //         // }
+      //       }
+      //     }
+      //   }
 
-      pc += 2;
+      //   pc += 2;
+      //   break;
+      // case 0xE000:
+      //   switch (nn) {
+      //     case 0x9E:  // 0xEX9E: Skips the next instruction if the key stored
+      //     in
+      //                 // Vx is pressed
+      //       pc += (mapper->keypad.getKey(v[x])) ? 4 : 2;
+      //       break;
+      //     case 0xA1:  // 0xEXA1: Skips the next instruction if the key stored
+      //     in
+      //                 // Vx is not pressed
+      //       pc += (mapper->keypad.getKey(v[x])) ? 2 : 4;
+      //       break;
+      //     default:
+      //       std::cout << "Unknown opcode: " << opcode << std::endl;
+      //       break;
+      //   }
+      //   break;
+      // case 0xF000:
+      //   switch (nn) {
+      //     case 0x07:  // 0xF007: Sets Vx to the value of the delay timer
+      //       v[x] = delayTimer;
+      //       pc += 2;
+      //       break;
+      //     case 0x0A:  // 0xF00A: A key press is awaited, and then stored in
+      //     Vx
+      //       // If the same key is pressed again, the program continues as
+      //       normal
+      //       // without waiting for the next key press
+      //       pc += 2;
+      //       break;
+      //     case 0x15:  // 0xF015: Sets the delay timer to Vx
+      //       delayTimer = v[x];
+      //       pc += 2;
+      //       break;
+      //     case 0x18:  // 0xF018: Sets the sound timer to Vx
+      //       soundTimer = v[x];
+      //       pc += 2;
+      //       break;
+      //     case 0x1E:  // 0xF01E: Adds Vx to I
+      //       i += v[x];
+      //       pc += 2;
+      //       break;
+      //     case 0x29:  // 0xF029: Sets I to the location of the sprite for the
+      //       // character in Vx
+      //       i = v[x] * 5;
+      //       pc += 2;
+      //       break;
+      //     case 0x33:  // 0xF033: Stores the binary-coded decimal
+      //     representation
+      //                 // of
+      //       // Vx, with the most significant of three digits at the address
+      //       in
+      //       // I, the middle digit at I plus 1, and the least significant
+      //       digit
+      //       // at I plus 2
+      //       write(i, v[x] / 100);
+      //       write(i + 1, (v[x] / 10) % 10);
+      //       write(i + 2, v[x] % 10);
+      //       pc += 2;
+      //       break;
+      //     case 0x55:  // 0xF055: Stores V0 to VX (including VX) in memory
+      //                 // starting at
+      //       // address I
+      //       for (uint8_t i = 0; i <= x; ++i) {
+      //         write(i, v[i]);
+      //       }
+      //       pc += 2;
+      //       break;
+      //     case 0x65:  // 0xF065: Fills V0 to VX (including VX) with values
+      //     from
+      //                 // memory
+      //       // starting at address I
+      //       for (uint8_t i = 0; i <= x; ++i) {
+      //         v[i] = read(i);
+      //       }
+      //       pc += 2;
+      //       break;
+      //     default:
+      //       std::cout << "Unknown opcode: " << opcode << std::endl;
+      //       break;
+      //       break;
+    default:
+      std::cout << "Unknown opcode: " << opcode << std::endl;
       break;
-    case 0xE000:
-      switch (nn) {
-        case 0x9E:  // 0xEX9E: Skips the next instruction if the key stored in
-                    // Vx is pressed
-          pc += (mapper->keypad.getKey(v[x])) ? 4 : 2;
-          break;
-        case 0xA1:  // 0xEXA1: Skips the next instruction if the key stored in
-                    // Vx is not pressed
-          pc += (mapper->keypad.getKey(v[x])) ? 2 : 4;
-          break;
-        default:
-          std::cout << "Unknown opcode: " << opcode << std::endl;
-          break;
-      }
-      break;
-    case 0xF000:
-      switch (nn) {
-        case 0x07:  // 0xF007: Sets Vx to the value of the delay timer
-          v[x] = delayTimer;
-          pc += 2;
-          break;
-        case 0x0A:  // 0xF00A: A key press is awaited, and then stored in Vx
-          // If the same key is pressed again, the program continues as normal
-          // without waiting for the next key press
-          pc += 2;
-          break;
-        case 0x15:  // 0xF015: Sets the delay timer to Vx
-          delayTimer = v[x];
-          pc += 2;
-          break;
-        case 0x18:  // 0xF018: Sets the sound timer to Vx
-          soundTimer = v[x];
-          pc += 2;
-          break;
-        case 0x1E:  // 0xF01E: Adds Vx to I
-          i += v[x];
-          pc += 2;
-          break;
-        case 0x29:  // 0xF029: Sets I to the location of the sprite for the
-          // character in Vx
-          i = v[x] * 5;
-          pc += 2;
-          break;
-        case 0x33:  // 0xF033: Stores the binary-coded decimal representation
-                    // of
-          // Vx, with the most significant of three digits at the address in
-          // I, the middle digit at I plus 1, and the least significant digit
-          // at I plus 2
-          write(i, v[x] / 100);
-          write(i + 1, (v[x] / 10) % 10);
-          write(i + 2, v[x] % 10);
-          pc += 2;
-          break;
-        case 0x55:  // 0xF055: Stores V0 to VX (including VX) in memory
-                    // starting at
-          // address I
-          for (uint8_t i = 0; i <= x; ++i) {
-            write(i, v[i]);
-          }
-          pc += 2;
-          break;
-        case 0x65:  // 0xF065: Fills V0 to VX (including VX) with values from
-                    // memory
-          // starting at address I
-          for (uint8_t i = 0; i <= x; ++i) {
-            v[i] = read(i);
-          }
-          pc += 2;
-          break;
-        default:
-          std::cout << "Unknown opcode: " << opcode << std::endl;
-          break;
-          break;
-        default:
-          std::cout << "Unknown opcode: " << opcode << std::endl;
-          break;
-      }
   }
+}
 }  // namespace chip8
