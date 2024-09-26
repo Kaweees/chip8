@@ -57,6 +57,9 @@ void CPU::write(uint16_t address, uint8_t value) {
 
 // Executes one cycle of the CPU
 void CPU::cycle() {
+  // Update the keypad
+  mapper->keypad.update();
+
   fetch();
   execute();
 
@@ -269,8 +272,8 @@ void CPU::execute() {
           break;
         case 0x55:  // 0xF055: Stores V0 to VX (including VX) in memory starting
                     // at address I
-          for (uint8_t i = 0; i <= x; ++i) {
-            write(i, v[i]);
+          for (uint8_t j = 0; j <= x; ++j) {
+            write(i + j, v[j]);
           }
           pc += 2;
           break;

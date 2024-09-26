@@ -10,8 +10,19 @@
 #include "../include/constants.hpp"
 #include "rlgl.h"
 
-// Keypad is a 64x32 monochrome Keypad. Each byte represents 8 pixels in a
-// column.
+// Keypad is a 4x4 matrix of keys that can be pressed
+// Input Mapping:
+// Keypad       Keyboard
+// +-+-+-+-+    +-+-+-+-+
+// |1|2|3|C|    |1|2|3|4|
+// +-+-+-+-+    +-+-+-+-+
+// |4|5|6|D|    |Q|W|E|R|
+// +-+-+-+-+ => +-+-+-+-+
+// |7|8|9|E|    |A|S|D|F|
+// +-+-+-+-+    +-+-+-+-+
+// |A|0|B|F|    |Z|X|C|V|
+// +-+-+-+-+    +-+-+-+-+
+
 namespace chip8 {
 class Keypad {
   public:

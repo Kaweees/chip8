@@ -5,6 +5,7 @@
 
 #include "../include/display.hpp"
 #include "../include/keypad.hpp"
+
 // Memory Map:
 // +---------------+= 0xFFF (4095) End of Chip-8 RAM
 // |               |

@@ -13,7 +13,7 @@
 //------------------------------------------------------------------------------------
 int main(int argc, char **argv) {
   // Initialization of Chip8 and loading of program
-  std::string filename = "./rom/test-opcode.ch8";
+  std::string filename = "./rom/space-invaders.ch8";
   if (argc > 1) {
     filename = argv[1];
   }
