@@ -11,7 +11,6 @@ Display::Display() : pixelColor(WHITE), backgroundColor(BLACK) {
   // Initialization of Raylib window
   InitWindow(DISPLAY_WIDTH * SCALE_FACTOR, DISPLAY_HEIGHT * SCALE_FACTOR,
       "CHIP-8 Emulator");
-  // SetTargetFPS(60);
   clear();
 }
 

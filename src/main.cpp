@@ -19,13 +19,6 @@ int main(int argc, char **argv) {
   }
 
   chip8::CPU chip8;
-  // chip8.mapper->display.setPixel(0, 0, true);
-  // // (63,0)
-  // chip8.mapper->display.setPixel(63, 0, true);
-  // // (0,31)
-  // chip8.mapper->display.setPixel(0, 31, true);
-  // // (63,31)
-  // chip8.mapper->display.setPixel(63, 31, true);
   chip8.loadRom(filename);
 
   // Main emulation loop

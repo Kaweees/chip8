@@ -32,6 +32,8 @@ class CPU {
   std::random_device rd;
   std::mt19937 gen;
   std::uniform_int_distribution<> dis;
+  std::chrono::nanoseconds frameDuration;
+  std::chrono::steady_clock::time_point lastCycleTime;
 #ifdef LOGMODE
   FILE *logfile = nullptr;  // Log file for debugging
 #endif

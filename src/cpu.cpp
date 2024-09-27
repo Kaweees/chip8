@@ -2,13 +2,17 @@
 
 #include <fstream>
 #include <iostream>
+#include <thread>
+#include <chrono>
 
 #include "../include/mapper.hpp"
+#include "../include/constants.hpp"
 
 namespace chip8 {
 CPU::CPU() {
   // Initialize the CPU
   pc = PROGRAM_START;
+  lastCycleTime = std::chrono::steady_clock::now();
 
   // Load fontset
   static const std::array<uint8_t, 80> fontset = {
@@ -57,22 +61,35 @@ void CPU::write(uint16_t address, uint8_t value) {
 
 // Executes one cycle of the CPU
 void CPU::cycle() {
-  // Update the keypad
-  mapper->keypad.update();
+    auto currentTime = std::chrono::steady_clock::now();
+    auto elapsedTime = std::chrono::duration_cast<std::chrono::nanoseconds>(
+        currentTime - lastCycleTime);
 
-  fetch();
-  execute();
+    if (elapsedTime < FRAME_DURATION) {
+        std::this_thread::sleep_for(FRAME_DURATION - elapsedTime);
+    }
 
-  // Update timers
-  if (delayTimer > 0) {
-    --delayTimer;
-  }
-  if (soundTimer > 0) {
-    --soundTimer;
-  }
+    // Update the keypad
+    mapper->keypad.update();
 
-  // Update the display
-  mapper->display.update();
+    // Execute multiple instructions per frame to maintain game speed
+    for (int i = 0; i < INSTRUCTIONS_PER_FRAME; i++) {
+        fetch();
+        execute();
+    }
+
+    // Update timers
+    if (delayTimer > 0) {
+        --delayTimer;
+    }
+    if (soundTimer > 0) {
+        --soundTimer;
+    }
+
+    // Update the display
+    mapper->display.update();
+
+    lastCycleTime = std::chrono::steady_clock::now();
 }
 
 // Fetches the next opcode from memory
@@ -239,11 +256,21 @@ void CPU::execute() {
           v[x] = delayTimer;
           pc += 2;
           break;
-        case 0x0A:  // 0xF00A: A key press is awaited, and then stored in Vx If
-                    // the same key is pressed again, the program continues as
-                    // normal without waiting for the next key press
-          pc += 2;
+        case 0x0A: {  // 0xF00A: A key press is awaited, and then stored in Vx
+          bool keyPressed = false;
+          for (uint8_t i = 0; i < KEYPAD_SIZE; ++i) {
+            if (mapper->keypad.getKey(i)) {
+              v[x] = i;
+              pc += 2;
+              keyPressed = true;
+              break;
+            }
+          }
+          if (!keyPressed) {
+            pc -= 2;
+          }
           break;
+        }
         case 0x15:  // 0xF015: Sets the delay timer to Vx
           delayTimer = v[x];
           pc += 2;
