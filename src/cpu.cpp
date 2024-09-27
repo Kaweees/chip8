@@ -1,12 +1,12 @@
 #include "../include/cpu.hpp"
 
+#include <chrono>
 #include <fstream>
 #include <iostream>
 #include <thread>
-#include <chrono>
 
-#include "../include/mapper.hpp"
 #include "../include/constants.hpp"
+#include "../include/mapper.hpp"
 
 namespace chip8 {
 CPU::CPU() {
@@ -61,35 +61,35 @@ void CPU::write(uint16_t address, uint8_t value) {
 
 // Executes one cycle of the CPU
 void CPU::cycle() {
-    auto currentTime = std::chrono::steady_clock::now();
-    auto elapsedTime = std::chrono::duration_cast<std::chrono::nanoseconds>(
-        currentTime - lastCycleTime);
+  auto currentTime = std::chrono::steady_clock::now();
+  auto elapsedTime = std::chrono::duration_cast<std::chrono::nanoseconds>(
+      currentTime - lastCycleTime);
 
-    if (elapsedTime < FRAME_DURATION) {
-        std::this_thread::sleep_for(FRAME_DURATION - elapsedTime);
-    }
+  if (elapsedTime < FRAME_DURATION) {
+    std::this_thread::sleep_for(FRAME_DURATION - elapsedTime);
+  }
 
-    // Update the keypad
-    mapper->keypad.update();
+  // Update the keypad
+  mapper->keypad.update();
 
-    // Execute multiple instructions per frame to maintain game speed
-    for (int i = 0; i < INSTRUCTIONS_PER_FRAME; i++) {
-        fetch();
-        execute();
-    }
+  // Execute multiple instructions per frame to maintain game speed
+  for (int i = 0; i < INSTRUCTIONS_PER_FRAME; i++) {
+    fetch();
+    execute();
+  }
 
-    // Update timers
-    if (delayTimer > 0) {
-        --delayTimer;
-    }
-    if (soundTimer > 0) {
-        --soundTimer;
-    }
+  // Update timers
+  if (delayTimer > 0) {
+    --delayTimer;
+  }
+  if (soundTimer > 0) {
+    --soundTimer;
+  }
 
-    // Update the display
-    mapper->display.update();
+  // Update the display
+  mapper->display.update();
 
-    lastCycleTime = std::chrono::steady_clock::now();
+  lastCycleTime = std::chrono::steady_clock::now();
 }
 
 // Fetches the next opcode from memory
