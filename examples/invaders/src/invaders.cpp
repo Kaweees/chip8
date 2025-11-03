@@ -1,26 +1,31 @@
 #include <stddef.h>
-#include <stdio.h>
-
-#include <string>
-
-#define EXIT_SUCCESS 0
-#define EXIT_FAILURE 1
+#include <lyra/lyra.hpp>
+#include <iostream>
+#include <filesystem>
 
 #include <chip8/chip8.hpp>
+
+namespace fs = std::filesystem;
 
 //------------------------------------------------------------------------------------
 // Program main entry point
 //------------------------------------------------------------------------------------
 int main(int argc, char** argv) {
-  // Initialization of Chip8 and loading of program
-  std::string filename = "./rom/space-invaders.ch8";
-  if (argc > 1) { filename = argv[1]; }
+  fs::path romfile;
+
+  auto cli = lyra::cli() | lyra::arg(romfile, "romfile").required().help("ROM file (e.g., foo.ch8)");
+
+  auto result = cli.parse({argc, argv});
+  if (!result) {
+    std::cerr << result.message() << "\n";
+    return 1;
+  }
 
   chip8::CPU chip8;
-  chip8.loadRom(filename);
+  chip8.loadRom(romfile.string());
 
   // Main emulation loop
   // Loop until window close button or ESC key is pressed
   while (!chip8.mapper->display.shouldClose()) { chip8.cycle(); }
-  return EXIT_SUCCESS;
+  return 0;
 }
