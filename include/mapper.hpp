@@ -36,28 +36,28 @@
 namespace chip8 {
 class Mapper {
   public:
-  // Constructor to initialize memory
-  Mapper();
+    // Constructor to initialize memory
+    Mapper();
 
-  // Destructor to free memory
-  ~Mapper() = default;
+    // Destructor to free memory
+    ~Mapper() = default;
 
-  // Method to read a byte from memory
-  uint8_t fetchByte(uint16_t address) const;
+    // Method to read a byte from memory
+    uint8_t fetchByte(uint16_t address) const;
 
-  // Method to write a byte to memory
-  void storeByte(uint16_t address, uint8_t value);
+    // Method to write a byte to memory
+    void storeByte(uint16_t address, uint8_t value);
 
-  // Method to print memory
-  void printMemory() const;
+    // Method to print memory
+    void printMemory() const;
 
-  // Array to represent memory
-  std::array<uint8_t, RAM_SIZE> ram;  // 4 kB of memory
-  // Array to represent stack
-  std::array<uint16_t, STACK_SIZE> stack;  // 16 levels of stack
-  // Array to represent keypad
-  Keypad keypad;
-  // Array to represent display
-  Display display;
+    // Array to represent memory
+    std::array<uint8_t, RAM_SIZE> ram; // 4 kB of memory
+    // Array to represent stack
+    std::array<uint16_t, STACK_SIZE> stack; // 16 levels of stack
+    // Array to represent keypad
+    Keypad keypad;
+    // Array to represent display
+    Display display;
 };
-}  // namespace chip8
+} // namespace chip8

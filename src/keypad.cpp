@@ -10,6 +10,7 @@ void Keypad::clear() {
   // Clear the keypad
   buffer.fill(false);
 }
+
 // Keypad is a 4x4 matrix of keys that can be pressed
 // Input Mapping:
 // Keypad       Keyboard
@@ -45,4 +46,4 @@ void Keypad::update() {
 
 bool Keypad::getKey(uint8_t key) const { return buffer[key]; }
 
-}  // namespace chip8
+} // namespace chip8

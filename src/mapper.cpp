@@ -28,4 +28,4 @@ void Mapper::storeByte(uint16_t address, uint8_t value) {
     throw std::out_of_range("Memory write out of bounds");
   }
 }
-}  // namespace chip8
+} // namespace chip8
