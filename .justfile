@@ -25,7 +25,7 @@ build *build_type='Release':
   @cd build && cmake --build . -j{{CORES}}
 
 # Run a package
-run package='chip8' *args='':
+run package='invaders' *args='':
   @./target/release/{{package}} {{args}}
 
 # Remove build artifacts and non-essential files

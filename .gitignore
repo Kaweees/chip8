@@ -1,9 +1,9 @@
 *
 
 !.github/
-!.github/**/
+!.github/**
 !assets/
-!assets/**/
+!assets/**
 !.editorconfig
 !.gitattributes
 !.gitignore
@@ -15,14 +15,16 @@
 !LICENSE
 !README.md
 
+!examples/
+!examples/**
 !include/
-!include/**/
+!include/**
 !src/
-!src/**/
+!src/**
 !scripts/
-!scripts/**/
-!resources/
-!resources/**/
+!scripts/**
+!rom/
+!rom/**
 
 !*.md
 !*.mdc
@@ -30,6 +32,8 @@
 !*.png
 !*.nix
 !*.lock
+!*.yaml
+!*.yml
 !*.sh
 !*.c
 !*.h

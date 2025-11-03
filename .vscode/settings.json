@@ -1,8 +1,0 @@
-{
-  "editor.formatOnSave": true,
-  "files.associations": {
-    "array": "cpp",
-    "cstdio": "cpp",
-    "cstdint": "cpp"
-  },
-}
