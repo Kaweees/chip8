@@ -1,68 +1,44 @@
-# Prerequisites
-*.d
+*
 
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
+!.github/
+!.github/**/
+!assets/
+!assets/**/
+!.editorconfig
+!.gitattributes
+!.gitignore
+!.gitmodules
+!.justfile
+!CMakeLists.txt
+!.clang-format
+!.cmake-format.py
+!LICENSE
+!README.md
 
-# Linker output
-*.ilk
-*.map
-*.exp
+!include/
+!include/**/
+!src/
+!src/**/
+!scripts/
+!scripts/**/
+!resources/
+!resources/**/
 
-# Precompiled Headers
-*.gch
-*.pch
-
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
-
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
-
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
-
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
-
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
-
-# CMake files
-CMakeCache.txt
-cmake_install.cmake
-CPackConfig.cmake
-_deps/
-Makefile
-obj/
-CMakeFiles/
-CPackSourceConfig.cmake 
-CMakeSettings.json
-
-# Build files
-.cache/
-target/
-build/
+!*.md
+!*.mdc
+!*.svg
+!*.png
+!*.nix
+!*.lock
+!*.sh
+!*.c
+!*.h
+!*.cc
+!*.hh
+!*.cxx
+!*.hxx
+!*.cpp
+!*.hpp
+!*.cu
+!*.cuh
+!*.ch8
