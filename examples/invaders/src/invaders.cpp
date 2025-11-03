@@ -3,10 +3,10 @@
 
 #include <string>
 
-#include "../include/cpu.hpp"
-
 #define EXIT_SUCCESS 0
 #define EXIT_FAILURE 1
+
+#include <chip8/chip8.hpp>
 
 //------------------------------------------------------------------------------------
 // Program main entry point
