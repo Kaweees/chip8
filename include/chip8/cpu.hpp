@@ -321,8 +321,7 @@ class CPU {
               break;
             case 0x65: { // 0xFX65: Fills V0 to VX (including VX) with values from
               // memory starting at address I
-              for (; i <= x; ++i) { v[i] = read(i); }
-              i += x + 1;
+              for (uint8_t j = 0; j <= x; ++j) { v[j] = read(i + j); }
               pc += 2;
               break;
             }
