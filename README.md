@@ -29,7 +29,7 @@
 
 <!-- ABOUT THE PROJECT -->
 
-A ray tracer implementation written in C++20
+An emulator and implementation of the CHIP-8 processor written in C++20
 
 ### Built With
 
@@ -44,7 +44,7 @@ A ray tracer implementation written in C++20
 <p align="center">
   <img src="assets/img/demo.png"
   width = "80%"
-  alt = "Current capabilities of the raytracer."
+  alt = "Space Invaders running on the emulator."
   />
 </p>
 
@@ -53,7 +53,7 @@ A ray tracer implementation written in C++20
 
 ### Prerequisites
 
-Before attempting to build this project, make sure you have [Nix](https://nixos.org/download.html) with [Flake](https://nixos.wiki/wiki/Flakes) support installed on your machine.
+Before attempting to build this project, make sure you have [Nix](https://nixos.org/download.html) installed on your machine.
 
 ### Installation
 
