@@ -19,8 +19,8 @@ namespace chip8 {
 class Display {
   public:
     // Constants for display screen size
-    static constexpr size_t SCREEN_WIDTH = DISPLAY_WIDTH * SCALE_FACTOR;
-    static constexpr size_t SCREEN_HEIGHT = DISPLAY_HEIGHT * SCALE_FACTOR;
+    static constexpr size_t SCREEN_WIDTH = chip8::DISPLAY_WIDTH * chip8::SCALE_FACTOR;
+    static constexpr size_t SCREEN_HEIGHT = chip8::DISPLAY_HEIGHT * chip8::SCALE_FACTOR;
 
     // Constructor to initialize memory
     Display()

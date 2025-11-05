@@ -62,6 +62,6 @@ class Keypad {
     bool getKey(uint8_t key) const { return buffer[key]; }
   private:
     // Array to represent keypad
-    std::array<bool, KEYPAD_SIZE> buffer; // 16 keys
+    std::array<bool, chip8::KEYPAD_SIZE> buffer; // 16 keys
 };
 } // namespace chip8
