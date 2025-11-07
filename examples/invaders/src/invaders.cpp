@@ -22,7 +22,7 @@ int main(int argc, char** argv) {
   }
 
   chip8::CPU chip8;
-  chip8.loadRom(romfile.string());
+  chip8.loadRom(romfile);
 
   // Main emulation loop
   // Loop until window close button or ESC key is pressed

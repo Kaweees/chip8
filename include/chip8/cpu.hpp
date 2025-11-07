@@ -2,11 +2,13 @@
 
 #include <cstdint>
 #include <random>
-#include <string>
 #include <chrono>
 #include <fstream>
 #include <iostream>
 #include <thread>
+#include <filesystem>
+
+namespace fs = std::filesystem;
 
 #include "mapper.hpp"
 
@@ -84,7 +86,7 @@ class CPU {
     }
 
     // Method to load a ROM into memory
-    void loadRom(const std::string& filename) {
+    void loadRom(const fs::path& filename) {
       std::ifstream file(filename, std::ios::binary);
       if (file.is_open()) {
         file.read(reinterpret_cast<char*>(&mapper->ram[PROGRAM_START]), RAM_SIZE - PROGRAM_START);
